@@ -1,28 +1,15 @@
-import { supabase } from "@/lib/supabase";
-import { Participante } from "@/types/participante";
+import {
 
-export async function listarParticipantes(): Promise<Participante[]> {
+    listarParticipantes,
 
-  const { data } = await supabase
-    .from("participantes")
-    .select("*")
-    .order("apelido");
+    criarParticipante
 
-  return (data ?? []) as Participante[];
-}
+} from "@/repositories/participantes";
 
-export async function criarParticipante(nome: string) {
+export {
 
-  const { data, error } = await supabase
-    .from("participantes")
-    .insert({
-      nome,
-      apelido: nome
-    })
-    .select()
-    .single();
+    listarParticipantes,
 
-  if (error) throw error;
+    criarParticipante
 
-  return data as Participante;
-}
+};

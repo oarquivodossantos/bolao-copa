@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { listarParticipantes } from "@/services/participantes";
+import { listarParticipantes } from "@/repositories/participantes";
 import { Participante } from "@/types/participante";
 
 export function useParticipantes() {

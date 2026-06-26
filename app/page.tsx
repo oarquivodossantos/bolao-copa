@@ -10,9 +10,9 @@ import Placar from "@/components/forms/Placar";
 
 import Button from "@/components/ui/Button";
 
-import { obterJogoAtual } from "@/services/jogos";
-import { criarParticipante } from "@/services/participantes";
-import { salvarPalpite } from "@/services/palpites";
+import { obterJogoAtual } from "@/repositories/jogos";
+import { criarParticipante } from "@/repositories/participantes";
+import { salvarPalpite } from "@/repositories/palpites";
 
 export default function Home() {
 

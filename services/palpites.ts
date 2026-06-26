@@ -1,42 +1,7 @@
-import { supabase } from "@/lib/supabase";
+import { salvarPalpite } from "@/repositories/palpites";
 
-export async function salvarPalpite(
-  jogoId: string,
-  participanteId: string,
-  golsBrasil: number,
-  golsAdversario: number
-) {
+export {
 
-  const { data: existente } = await supabase
-    .from("palpites")
-    .select("id")
-    .eq("jogo_id", jogoId)
-    .eq("participante_id", participanteId)
-    .maybeSingle();
+    salvarPalpite
 
-  if (existente) {
-
-    const { error } = await supabase
-      .from("palpites")
-      .update({
-        gols_brasil: golsBrasil,
-        gols_adversario: golsAdversario
-      })
-      .eq("id", existente.id);
-
-    if (error) throw error;
-
-    return;
-  }
-
-  const { error } = await supabase
-    .from("palpites")
-    .insert({
-      jogo_id: jogoId,
-      participante_id: participanteId,
-      gols_brasil: golsBrasil,
-      gols_adversario: golsAdversario
-    });
-
-  if (error) throw error;
-}
+};

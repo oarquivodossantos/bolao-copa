@@ -1,15 +1,7 @@
-import { supabase } from "@/lib/supabase";
-import { Jogo } from "@/types/jogo";
+import { obterJogoAtual } from "@/repositories/jogos";
 
-export async function obterJogoAtual(): Promise<Jogo | null> {
+export async function buscarJogoAberto() {
 
-  const { data, error } = await supabase
-    .from("jogos")
-    .select("*")
-    .eq("palpites_abertos", true)
-    .single();
+    return await obterJogoAtual();
 
-  if (error) return null;
-
-  return data as Jogo;
 }
