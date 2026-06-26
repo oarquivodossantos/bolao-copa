@@ -1,76 +1,81 @@
 "use client";
 
-import { useState } from "react";
+interface Props{
 
-export default function Placar() {
-  const [brasil, setBrasil] = useState(0);
-  const [adversario, setAdversario] = useState(0);
+    golsBrasil:number;
 
-  return (
-    <div className="flex justify-between items-center mb-8">
+    golsAdversario:number;
 
-      <div className="flex flex-col items-center">
+    setGolsBrasil:(v:number)=>void;
 
-        <span className="mb-2 text-3xl">🇧🇷</span>
+    setGolsAdversario:(v:number)=>void;
 
-        <div className="flex items-center gap-2">
+}
 
-          <button
-            onClick={() => brasil > 0 && setBrasil(brasil - 1)}
-            className="w-10 h-10 rounded-full bg-red-500 text-white text-xl"
-          >
-            -
-          </button>
+export default function Placar({
 
-          <span className="text-4xl font-bold w-10 text-center">
-            {brasil}
-          </span>
+    golsBrasil,
 
-          <button
-            onClick={() => setBrasil(brasil + 1)}
-            className="w-10 h-10 rounded-full bg-green-600 text-white text-xl"
-          >
-            +
-          </button>
+    golsAdversario,
+
+    setGolsBrasil,
+
+    setGolsAdversario
+
+}:Props){
+
+    return(
+
+        <div className="flex justify-around mt-8">
+
+            <div className="text-center">
+
+                <h2>🇧🇷</h2>
+
+                <input
+
+                    type="number"
+
+                    value={golsBrasil}
+
+                    min={0}
+
+                    className="border rounded p-3 w-20 text-center"
+
+                    onChange={(e)=>setGolsBrasil(Number(e.target.value))}
+
+                />
+
+            </div>
+
+            <div className="flex items-center font-bold text-2xl">
+
+                x
+
+            </div>
+
+            <div className="text-center">
+
+                <h2>🏳️</h2>
+
+                <input
+
+                    type="number"
+
+                    value={golsAdversario}
+
+                    min={0}
+
+                    className="border rounded p-3 w-20 text-center"
+
+                    onChange={(e)=>setGolsAdversario(Number(e.target.value))}
+
+                />
+
+            </div>
 
         </div>
 
-      </div>
+    )
 
-      <div className="text-3xl font-bold">
-        x
-      </div>
-
-      <div className="flex flex-col items-center">
-
-        <span className="mb-2 text-3xl">🇯🇵</span>
-
-        <div className="flex items-center gap-2">
-
-          <button
-            onClick={() =>
-              adversario > 0 && setAdversario(adversario - 1)
-            }
-            className="w-10 h-10 rounded-full bg-red-500 text-white text-xl"
-          >
-            -
-          </button>
-
-          <span className="text-4xl font-bold w-10 text-center">
-            {adversario}
-          </span>
-
-          <button
-            onClick={() => setAdversario(adversario + 1)}
-            className="w-10 h-10 rounded-full bg-green-600 text-white text-xl"
-          >
-            +
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-  );
 }
