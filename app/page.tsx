@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from "react";
 
-import Header from "@/components/Header";
-import Placar from "@/components/Placar";
-import BotaoConfirmar from "@/components/BotaoConfirmar";
-import ParticipanteSelect from "@/components/ParticipanteSelect";
+import Header from "@/components/layout/Header";
+import Card from "@/components/layout/Card";
+
+import ParticipanteSelect from "@/components/forms/ParticipanteSelect";
+import Placar from "@/components/forms/Placar";
+
+import Button from "@/components/ui/Button";
 
 import { obterJogoAtual } from "@/services/jogos";
 import { criarParticipante } from "@/services/participantes";
@@ -51,7 +54,7 @@ export default function Home() {
 
       let participante = participanteId;
 
-      if (participanteId === "novo") {
+      if (participante === "novo") {
 
         const novo = await criarParticipante(novoNome);
 
@@ -73,12 +76,6 @@ export default function Home() {
 
       alert("Palpite salvo com sucesso.");
 
-    } catch (e) {
-
-      console.error(e);
-
-      alert("Erro ao salvar.");
-
     } finally {
 
       setSalvando(false);
@@ -89,9 +86,9 @@ export default function Home() {
 
   return (
 
-    <main className="min-h-screen bg-green-100 flex items-center justify-center">
+    <main className="min-h-screen bg-green-100 flex items-center justify-center p-6">
 
-      <div className="bg-white rounded-3xl shadow-xl p-8 w-full max-w-md">
+      <Card>
 
         <Header />
 
@@ -137,17 +134,29 @@ export default function Home() {
 
         <div className="mt-6">
 
-          <BotaoConfirmar
+          <Button
 
             onClick={confirmar}
 
             disabled={salvando}
 
-          />
+          >
+
+            {
+
+              salvando
+
+              ? "Salvando..."
+
+              : "Confirmar Palpite"
+
+            }
+
+          </Button>
 
         </div>
 
-      </div>
+      </Card>
 
     </main>
 
