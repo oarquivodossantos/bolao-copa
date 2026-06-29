@@ -35,41 +35,61 @@ export default function Home() {
     texto: string,
     tipoMsg: "sucesso" | "erro"
   ) {
+
     setMensagem(texto);
     setTipo(tipoMsg);
 
     setTimeout(() => {
+
       setMensagem("");
       setTipo("");
+
     }, 4000);
+
   }
 
   async function carregar() {
+
     try {
+
       const jogoAtual = await buscarJogoAberto();
+
       setJogo(jogoAtual);
+
     } catch (e) {
+
       console.error(e);
+
     }
+
   }
 
   async function confirmar() {
+
     try {
+
       setSalvando(true);
 
       if (!jogo) {
+
         throw new Error("Os palpites estão encerrados.");
+
       }
 
       let participante = participanteId;
 
       if (!participante) {
+
         throw new Error("Selecione um participante.");
+
       }
 
       if (participante === "novo") {
+
         if (!novoNome.trim()) {
+
           throw new Error("Informe o nome.");
+
         }
 
         const novo = await criarParticipante(
@@ -77,25 +97,37 @@ export default function Home() {
         );
 
         participante = novo.id;
+
       }
 
       await salvarPalpite(
+
         jogo.id,
+
         participante,
+
         golsBrasil,
+
         golsAdversario
+
       );
 
       mostrarMensagem(
+
         "✅ Palpite salvo com sucesso!",
+
         "sucesso"
+
       );
 
     } catch (e: any) {
 
       mostrarMensagem(
+
         e.message ?? "Erro ao salvar.",
+
         "erro"
+
       );
 
     } finally {
@@ -103,6 +135,7 @@ export default function Home() {
       setSalvando(false);
 
     }
+
   }
 
   return (
@@ -112,11 +145,17 @@ export default function Home() {
       <Card>
 
         <Header
+
           adversario={jogo?.adversario}
+
           fase={jogo?.fase}
+
           premio={jogo?.premio}
+
           dataHora={jogo?.data_hora}
+
           aberto={!!jogo}
+
         />
 
         {mensagem && (
@@ -128,7 +167,9 @@ export default function Home() {
                 : "bg-red-100 border border-red-300 text-red-700"
             }`}
           >
+
             {mensagem}
+
           </div>
 
         )}
@@ -144,38 +185,57 @@ export default function Home() {
         )}
 
         <ParticipanteSelect
+
           value={participanteId}
+
           onChange={setParticipanteId}
+
         />
 
         {participanteId === "novo" && (
 
           <input
+
             className="border rounded-xl p-4 w-full mt-4"
+
             placeholder="Nome"
+
             value={novoNome}
+
             onChange={(e) => setNovoNome(e.target.value)}
+
           />
 
         )}
 
         <Placar
-          adversario={jogo?.adversario}
+
           golsBrasil={golsBrasil}
+
           golsAdversario={golsAdversario}
+
           setGolsBrasil={setGolsBrasil}
+
           setGolsAdversario={setGolsAdversario}
+
         />
 
         <div className="mt-6">
 
           <Button
+
             onClick={confirmar}
+
             disabled={!jogo || salvando}
+
           >
+
             {salvando
+
               ? "Salvando..."
+
               : "Confirmar Palpite"}
+
           </Button>
 
         </div>

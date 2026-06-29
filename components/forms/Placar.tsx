@@ -1,6 +1,7 @@
 "use client";
 
 interface Props {
+  adversario?: string;
   golsBrasil: number;
   golsAdversario: number;
   setGolsBrasil: (v: number) => void;
@@ -8,23 +9,24 @@ interface Props {
 }
 
 export default function Placar({
+  adversario = "Adversário",
   golsBrasil,
   golsAdversario,
   setGolsBrasil,
   setGolsAdversario,
 }: Props) {
   return (
-    <div className="mt-8 rounded-2xl bg-gradient-to-r from-green-50 to-yellow-50 border border-green-200 p-6">
+    <div className="mt-8 rounded-2xl border border-green-200 bg-gradient-to-r from-green-50 to-yellow-50 p-6">
 
       <div className="flex items-center justify-center gap-8">
 
         <div className="flex flex-col items-center">
 
-          <div className="text-6xl mb-2">
+          <div className="mb-2 text-6xl">
             🇧🇷
           </div>
 
-          <span className="font-bold text-lg mb-3">
+          <span className="mb-3 text-lg font-bold">
             Brasil
           </span>
 
@@ -45,12 +47,12 @@ export default function Placar({
 
         <div className="flex flex-col items-center">
 
-          <div className="text-6xl mb-2">
+          <div className="mb-2 text-6xl">
             🏳️
           </div>
 
-          <span className="font-bold text-lg mb-3">
-            Adversário
+          <span className="mb-3 text-lg font-bold text-center">
+            {adversario}
           </span>
 
           <input
