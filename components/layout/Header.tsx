@@ -6,6 +6,62 @@ interface Props {
   aberto?: boolean;
 }
 
+function bandeira(pais: string) {
+  const p = (pais || "").toLowerCase().trim();
+
+  const mapa: Record<string, string> = {
+    "argentina": "🇦🇷",
+    "alemanha": "🇩🇪",
+    "arabia saudita": "🇸🇦",
+    "austrália": "🇦🇺",
+    "australia": "🇦🇺",
+    "belgica": "🇧🇪",
+    "bélgica": "🇧🇪",
+    "bolivia": "🇧🇴",
+    "bolívia": "🇧🇴",
+    "brasil": "🇧🇷",
+    "canada": "🇨🇦",
+    "canadá": "🇨🇦",
+    "catar": "🇶🇦",
+    "china": "🇨🇳",
+    "chinaa": "🇨🇳",
+    "coreia do sul": "🇰🇷",
+    "croacia": "🇭🇷",
+    "croácia": "🇭🇷",
+    "dinamarca": "🇩🇰",
+    "egito": "🇪🇬",
+    "equador": "🇪🇨",
+    "espanha": "🇪🇸",
+    "estados unidos": "🇺🇸",
+    "eua": "🇺🇸",
+    "frança": "🇫🇷",
+    "franca": "🇫🇷",
+    "holanda": "🇳🇱",
+    "inglaterra": "🏴",
+    "irã": "🇮🇷",
+    "ira": "🇮🇷",
+    "italia": "🇮🇹",
+    "itália": "🇮🇹",
+    "japao": "🇯🇵",
+    "japão": "🇯🇵",
+    "marrocos": "🇲🇦",
+    "mexico": "🇲🇽",
+    "méxico": "🇲🇽",
+    "paraguai": "🇵🇾",
+    "peru": "🇵🇪",
+    "polonia": "🇵🇱",
+    "polônia": "🇵🇱",
+    "portugal": "🇵🇹",
+    "servia": "🇷🇸",
+    "sérvia": "🇷🇸",
+    "suica": "🇨🇭",
+    "suíça": "🇨🇭",
+    "uruguai": "🇺🇾"
+  };
+
+  return mapa[p] ?? "🏳️";
+}
+
 export default function Header({
   adversario = "---",
   fase = "",
@@ -55,7 +111,7 @@ export default function Header({
           <div className="text-center">
 
             <div className="text-6xl">
-              🏳️
+              {bandeira(adversario)}
             </div>
 
             <div className="mt-2 text-xl font-bold">
@@ -87,17 +143,13 @@ export default function Header({
         <div className="mt-6 flex justify-center">
 
           {aberto ? (
-
             <span className="rounded-full bg-green-600 px-5 py-2 font-bold text-white shadow">
               🟢 PALPITES ABERTOS
             </span>
-
           ) : (
-
             <span className="rounded-full bg-red-600 px-5 py-2 font-bold text-white shadow">
               🔴 PALPITES ENCERRADOS
             </span>
-
           )}
 
         </div>
