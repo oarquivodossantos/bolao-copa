@@ -1,17 +1,28 @@
 import { supabase } from "@/lib/supabase";
 
+function converterDataLocal(dataHora: string) {
+  const data = new Date(dataHora);
+
+  data.setMinutes(
+    data.getMinutes() - data.getTimezoneOffset()
+  );
+
+  return data.toISOString();
+}
+
 export async function criarJogo(
   adversario: string,
   fase: string,
   dataHora: string,
   premio: string
 ) {
+
   const { data, error } = await supabase
     .from("jogos")
     .insert({
       adversario,
       fase,
-      data_hora: dataHora,
+      data_hora: converterDataLocal(dataHora),
       premio,
       palpites_abertos: false,
       placar_brasil: null,
@@ -23,9 +34,11 @@ export async function criarJogo(
   if (error) throw error;
 
   return data;
+
 }
 
 export async function listarJogos() {
+
   const { data, error } = await supabase
     .from("jogos")
     .select("*")
@@ -34,4 +47,5 @@ export async function listarJogos() {
   if (error) throw error;
 
   return data ?? [];
+
 }
