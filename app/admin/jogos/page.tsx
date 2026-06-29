@@ -1,79 +1,97 @@
-import Link from "next/link";
+"use client";
 
-export default function AdminPage() {
+import { useState } from "react";
+import ListaJogos from "@/components/admin/ListaJogos";
+import { criarJogo } from "@/services/adminJogos";
+
+export default function JogosPage() {
+
+  const [adversario, setAdversario] = useState("");
+  const [fase, setFase] = useState("");
+  const [dataHora, setDataHora] = useState("");
+  const [premio, setPremio] = useState("");
+
+  async function salvar() {
+
+    if (!adversario || !fase || !dataHora) {
+      alert("Preencha todos os campos.");
+      return;
+    }
+
+    await criarJogo(
+      adversario,
+      fase,
+      dataHora,
+      premio
+    );
+
+    location.reload();
+
+  }
+
   return (
+
     <main className="min-h-screen bg-slate-100 p-10">
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
 
-        <h1 className="text-4xl font-bold mb-10">
-          Painel Administrativo
+        <h1 className="text-4xl font-bold mb-8">
+
+          Cadastro de Jogos
+
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white rounded-xl shadow p-6 mb-8">
 
-          <Link
-            href="/admin/jogos"
-            className="bg-white rounded-xl shadow p-8 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer"
+          <div className="grid grid-cols-4 gap-4">
+
+            <input
+              className="border rounded-lg p-3"
+              placeholder="Adversário"
+              value={adversario}
+              onChange={(e)=>setAdversario(e.target.value)}
+            />
+
+            <input
+              className="border rounded-lg p-3"
+              placeholder="Fase"
+              value={fase}
+              onChange={(e)=>setFase(e.target.value)}
+            />
+
+            <input
+              className="border rounded-lg p-3"
+              type="datetime-local"
+              value={dataHora}
+              onChange={(e)=>setDataHora(e.target.value)}
+            />
+
+            <input
+              className="border rounded-lg p-3"
+              placeholder="Prêmio"
+              value={premio}
+              onChange={(e)=>setPremio(e.target.value)}
+            />
+
+          </div>
+
+          <button
+            onClick={salvar}
+            className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
           >
-            <div className="text-5xl mb-4">⚽</div>
 
-            <h2 className="text-2xl font-bold">
-              Jogos
-            </h2>
+            Salvar Jogo
 
-            <p className="text-gray-500 mt-2">
-              Cadastro, abertura, fechamento e resultados.
-            </p>
-
-          </Link>
-
-          <div className="bg-white rounded-xl shadow p-8 opacity-60">
-
-            <div className="text-5xl mb-4">👥</div>
-
-            <h2 className="text-2xl font-bold">
-              Participantes
-            </h2>
-
-            <p className="text-gray-500 mt-2">
-              Em desenvolvimento
-            </p>
-
-          </div>
-
-          <div className="bg-white rounded-xl shadow p-8 opacity-60">
-
-            <div className="text-5xl mb-4">📝</div>
-
-            <h2 className="text-2xl font-bold">
-              Palpites
-            </h2>
-
-            <p className="text-gray-500 mt-2">
-              Em desenvolvimento
-            </p>
-
-          </div>
-
-          <div className="bg-white rounded-xl shadow p-8 opacity-60">
-
-            <div className="text-5xl mb-4">🏆</div>
-
-            <h2 className="text-2xl font-bold">
-              Ranking
-            </h2>
-
-            <p className="text-gray-500 mt-2">
-              Em desenvolvimento
-            </p>
-
-          </div>
+          </button>
 
         </div>
+
+        <ListaJogos />
 
       </div>
 
     </main>
+
   );
+
 }
