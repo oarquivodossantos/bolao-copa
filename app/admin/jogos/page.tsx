@@ -1,4 +1,5 @@
 import FormJogo from "@/components/admin/FormJogo";
+import ListaJogos from "@/components/admin/ListaJogos";
 
 export default function JogosPage() {
   return (
@@ -12,43 +13,7 @@ export default function JogosPage() {
 
         <FormJogo />
 
-        <div className="bg-white rounded-xl shadow">
-
-          <table className="w-full">
-
-            <thead>
-
-              <tr className="border-b">
-
-                <th className="p-4 text-left">Adversário</th>
-                <th className="p-4 text-left">Fase</th>
-                <th className="p-4 text-left">Data</th>
-                <th className="p-4 text-left">Prêmio</th>
-                <th className="p-4 text-center">Status</th>
-
-              </tr>
-
-            </thead>
-
-            <tbody>
-
-              <tr>
-
-                <td
-                  className="p-8 text-center text-gray-400"
-                  colSpan={5}
-                >
-                  Nenhum jogo cadastrado.
-
-                </td>
-
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
+        <ListaJogos />
 
       </div>
 

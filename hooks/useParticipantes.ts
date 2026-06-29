@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { listarParticipantes } from "@/repositories/participantes";
-import { Participante } from "@/types/participante";
+import { Participante } from "@/models/Participante";
 
 export function useParticipantes() {
 
@@ -13,11 +13,17 @@ export function useParticipantes() {
 
     async function carregar() {
 
-      const lista = await listarParticipantes();
+      try {
 
-      setParticipantes(lista);
+        const lista = await listarParticipantes();
 
-      setLoading(false);
+        setParticipantes(lista);
+
+      } finally {
+
+        setLoading(false);
+
+      }
 
     }
 

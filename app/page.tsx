@@ -4,47 +4,65 @@ import { useEffect, useState } from "react";
 
 import Header from "@/components/layout/Header";
 import Card from "@/components/layout/Card";
-
 import ParticipanteSelect from "@/components/forms/ParticipanteSelect";
 import Placar from "@/components/forms/Placar";
-
 import Button from "@/components/ui/Button";
 
-import { obterJogoAtual } from "@/repositories/jogos";
-import { criarParticipante } from "@/repositories/participantes";
-import { salvarPalpite } from "@/repositories/palpites";
+import { buscarJogoAberto } from "@/services/jogos";
+import { criarParticipante } from "@/services/participantes";
+import { salvarPalpite } from "@/services/palpites";
 
 export default function Home() {
 
-  const [jogoId, setJogoId] = useState("");
+  const [jogo, setJogo] = useState<any>(null);
 
   const [participanteId, setParticipanteId] = useState("");
-
   const [novoNome, setNovoNome] = useState("");
 
   const [golsBrasil, setGolsBrasil] = useState(0);
-
   const [golsAdversario, setGolsAdversario] = useState(0);
 
   const [salvando, setSalvando] = useState(false);
 
+  const [mensagem, setMensagem] = useState("");
+  const [tipo, setTipo] = useState<"sucesso" | "erro" | "">("");
+
   useEffect(() => {
+    carregar();
+  }, []);
 
-    async function carregar() {
+  function mostrarMensagem(
+    texto: string,
+    tipoMsg: "sucesso" | "erro"
+  ) {
 
-      const jogo = await obterJogoAtual();
+    setMensagem(texto);
+    setTipo(tipoMsg);
 
-      if (jogo) {
+    setTimeout(() => {
 
-        setJogoId(jogo.id);
+      setMensagem("");
+      setTipo("");
 
-      }
+    }, 4000);
+
+  }
+
+  async function carregar() {
+
+    try {
+
+      const jogoAtual = await buscarJogoAberto();
+
+      setJogo(jogoAtual);
+
+    } catch (e) {
+
+      console.error(e);
 
     }
 
-    carregar();
-
-  }, []);
+  }
 
   async function confirmar() {
 
@@ -52,11 +70,31 @@ export default function Home() {
 
       setSalvando(true);
 
+      if (!jogo) {
+
+        throw new Error("Os palpites estão encerrados.");
+
+      }
+
       let participante = participanteId;
+
+      if (!participante) {
+
+        throw new Error("Selecione um participante.");
+
+      }
 
       if (participante === "novo") {
 
-        const novo = await criarParticipante(novoNome);
+        if (!novoNome.trim()) {
+
+          throw new Error("Informe o nome.");
+
+        }
+
+        const novo = await criarParticipante(
+          novoNome.trim()
+        );
 
         participante = novo.id;
 
@@ -64,7 +102,7 @@ export default function Home() {
 
       await salvarPalpite(
 
-        jogoId,
+        jogo.id,
 
         participante,
 
@@ -74,7 +112,23 @@ export default function Home() {
 
       );
 
-      alert("Palpite salvo com sucesso.");
+      mostrarMensagem(
+
+        "✅ Palpite salvo com sucesso!",
+
+        "sucesso"
+
+      );
+
+    } catch (e: any) {
+
+      mostrarMensagem(
+
+        e.message ?? "Erro ao salvar.",
+
+        "erro"
+
+      );
 
     } finally {
 
@@ -86,11 +140,49 @@ export default function Home() {
 
   return (
 
-    <main className="min-h-screen bg-green-100 flex items-center justify-center p-6">
+    <main className="min-h-screen bg-gradient-to-b from-green-100 to-green-50 flex items-center justify-center p-6">
 
       <Card>
 
-        <Header />
+        <Header
+
+          adversario={jogo?.adversario}
+
+          fase={jogo?.fase}
+
+          premio={jogo?.premio}
+
+          dataHora={jogo?.data_hora}
+
+          aberto={!!jogo}
+
+        />
+
+        {mensagem && (
+
+          <div
+            className={`mb-5 rounded-xl p-4 text-center font-bold ${
+              tipo === "sucesso"
+                ? "bg-green-100 border border-green-300 text-green-700"
+                : "bg-red-100 border border-red-300 text-red-700"
+            }`}
+          >
+
+            {mensagem}
+
+          </div>
+
+        )}
+
+        {!jogo && (
+
+          <div className="mb-6 rounded-xl bg-red-100 border border-red-300 p-4 text-center font-semibold text-red-700">
+
+            Os palpites para este jogo estão encerrados.
+
+          </div>
+
+        )}
 
         <ParticipanteSelect
 
@@ -100,25 +192,21 @@ export default function Home() {
 
         />
 
-        {
+        {participanteId === "novo" && (
 
-          participanteId === "novo" && (
+          <input
 
-            <input
+            className="border rounded-xl p-4 w-full mt-4"
 
-              className="border rounded-xl p-4 w-full mt-4"
+            placeholder="Nome"
 
-              placeholder="Nome"
+            value={novoNome}
 
-              value={novoNome}
+            onChange={(e) => setNovoNome(e.target.value)}
 
-              onChange={(e)=>setNovoNome(e.target.value)}
+          />
 
-            />
-
-          )
-
-        }
+        )}
 
         <Placar
 
@@ -138,19 +226,15 @@ export default function Home() {
 
             onClick={confirmar}
 
-            disabled={salvando}
+            disabled={!jogo || salvando}
 
           >
 
-            {
-
-              salvando
+            {salvando
 
               ? "Salvando..."
 
-              : "Confirmar Palpite"
-
-            }
+              : "Confirmar Palpite"}
 
           </Button>
 

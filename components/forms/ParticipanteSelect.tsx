@@ -3,64 +3,58 @@
 import { useParticipantes } from "@/hooks/useParticipantes";
 
 interface Props {
-
   value: string;
-
   onChange: (id: string) => void;
-
 }
 
 export default function ParticipanteSelect({
-
   value,
-
-  onChange
-
+  onChange,
 }: Props) {
-
-  const {
-
-    participantes,
-
-    loading
-
-  } = useParticipantes();
+  const { participantes, loading } = useParticipantes();
 
   if (loading) {
-
-    return <p>Carregando participantes...</p>;
-
+    return (
+      <div className="w-full rounded-xl border border-gray-200 bg-gray-50 p-4 text-center text-gray-500">
+        Carregando participantes...
+      </div>
+    );
   }
 
   return (
+    <div className="mb-5">
 
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full border rounded-xl p-4"
-    >
+      <label className="mb-2 block text-sm font-semibold text-gray-700">
+        👤 Participante
+      </label>
 
-      <option value="">
-        Selecione um participante
-      </option>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-xl border-2 border-gray-300 bg-white p-4 text-lg shadow-sm transition focus:border-green-600 focus:outline-none"
+      >
 
-      {participantes.map((p) => (
-
-        <option
-          key={p.id}
-          value={p.id}
-        >
-          {p.apelido}
+        <option value="">
+          Selecione seu nome
         </option>
 
-      ))}
+        {participantes.map((p) => (
 
-      <option value="novo">
-        ➕ Novo participante
-      </option>
+          <option
+            key={p.id}
+            value={p.id}
+          >
+            👤 {p.apelido}
+          </option>
 
-    </select>
+        ))}
 
+        <option value="novo">
+          ➕ Cadastrar novo participante
+        </option>
+
+      </select>
+
+    </div>
   );
-
 }
