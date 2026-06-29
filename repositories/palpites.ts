@@ -54,3 +54,22 @@ export async function salvarPalpite(
 
   if (error) throw error;
 }
+
+export async function listarPalpitesPorJogo(jogoId: string) {
+
+  const { data, error } = await supabase
+    .from("palpites")
+    .select(`
+      gols_brasil,
+      gols_adversario,
+      participantes (
+        apelido
+      )
+    `)
+    .eq("jogo_id", jogoId)
+    .order("created_at");
+
+  if (error) throw error;
+
+  return data ?? [];
+}

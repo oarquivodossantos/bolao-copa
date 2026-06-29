@@ -1,7 +1,9 @@
-import { salvarPalpite } from "@/repositories/palpites";
+import {
+  salvarPalpite,
+  listarPalpitesPorJogo
+} from "@/repositories/palpites";
 
 export {
-
-    salvarPalpite
-
+  salvarPalpite,
+  listarPalpitesPorJogo
 };
